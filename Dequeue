@@ -1,0 +1,172 @@
+//deque-->double ended circular queue
+/*
+  same as circular queue
+  we can operate both insert and delete elements in rare end and front end aslo
+  4 operations:
+     enqueue at rare
+     enqueue at front
+     dequeue at rare
+     dequeue at front
+*/
+#include<stdio.h>
+#include<stdlib.h>
+int *que,front=-1,rare=-1,size;
+void enque_at_rare(int val)
+{
+	if((front==0 &rare==size-1)||rare+1==front)
+	{
+		printf("queue is overflow\n");
+	}
+	else if(front==-1 && rare==-1)
+	{
+		front=0;
+		rare=0;
+		que[rare]=val;
+	}
+	else
+	{
+		rare=(rare+1)%size;
+		que[rare]=val;
+	}
+}
+void enque_at_front(int val)
+{
+	if((front==0 &&rare==size-1)||rare+1==front)
+	{
+		printf("queue is overflow\n");
+	}
+	else if(front==-1 && rare==-1)
+	{
+		front=0;
+		rare=0;
+		que[front]=val;
+	}
+	else
+	{
+		if(front==0)
+		{
+			front=size-1;// 0--->size-1
+		}
+		else
+		{
+			front--;// 5 4 3 2 1
+		}
+		que[front]=val;
+	}
+}
+int deque_at_rare()
+{
+	int val;
+	if(front==-1 && rare==-1)
+	{
+		return -1;
+	}
+	if(front==rare)
+	{
+		val=que[front];
+		front=-1;
+		rare=-1;
+		return val;
+	}
+	val=que[rare];
+	if(rare==0)
+	{
+		rare=size-1;
+	}
+	else
+	{
+		rare--;
+	}
+	return val;
+}
+int deque_at_front()
+{
+	int val;
+	if(front==-1 && rare==-1)
+	{
+		return -1;
+	}
+	if(front==rare)
+	{
+		val=que[front];
+		front=-1;
+		rare=-1;
+		return val;
+	}
+	val=que[front];
+	front=(front+1)%size;
+	return val;
+}
+void display()
+{
+	int i,j;
+	if(front==-1 && rare==-1)
+	{
+		printf("underflow\n");
+	}
+	else
+	{
+		i=front;
+		j=rare;
+	while(i!=j)
+	{
+		printf("%d %d\n",i,que[i]);
+		i=(i+1)%size;
+	}
+	printf("%d %d\n",j,que[j]);
+}
+}
+void main()
+{
+	int ch,val,i;
+	scanf("%d",&size);
+	que=(int *)calloc(size,sizeof(int));
+	while(1)
+	{
+		printf("1.enque at rare 2.deque at rare 3.enque at front 4.deque at front 5.display 6.exit: ");
+		scanf("%d",&ch);
+		if(ch==1)
+		{	
+			//enque at rare
+			scanf("%d",&val);
+			enque_at_rare(val);
+		}
+		else if(ch==2)
+		{
+			val=deque_at_rare();
+			if(val==-1)
+			{
+				printf("underflow\n");
+			}
+			else
+			{
+				printf("%d\n",val);
+			}
+		}
+		else if(ch==3)
+		{
+			scanf("%d",&val);
+			enque_at_front(val);
+		}
+		else if(ch==4)
+		{
+			val=deque_at_front();
+			if(val==-1)
+			{
+				printf("underflow\n");
+			}
+			else
+			{
+				printf("%d\n",val);
+			}
+		}
+		else if(ch==5)
+		{
+			display();
+		}
+		else
+		{
+			break;
+		}
+	}
+}
